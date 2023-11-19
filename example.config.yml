@@ -1,0 +1,16 @@
+---
+# General
+
+# Set user to be used for configuration
+
+# volume name
+volume_name: LibSQL
+
+# pod name
+pod_name: test-sql
+
+# pgadmin image
+pgadmin_image: docker.io/dpage/pgadmin4:latest
+
+# postgresql image
+postgresql_image: docker.io/library/postgres:latest
