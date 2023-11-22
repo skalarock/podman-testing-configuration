@@ -1,0 +1,24 @@
+---
+- name: Create pgadmin container
+  containers.podman.podman_container:
+    name: pgadmin
+    image: "{{ pgadmin_image }}"
+    state: started
+    detach: true
+    pod: "{{ pod_name }}"
+    env:
+      PGADMIN_DEFAULT_EMAIL: "{{ pgadmin_default_email }}"
+      PGADMIN_DEFAULT_PASSWORD: "{{ pgadmin_default_password }}"
+
+- name: Create postgresql container
+  containers.podman.podman_container:
+    name: db
+    image: "{{ postgresql_image }}"
+    state: started
+    detach: true
+    pod: "{{ pod_name }}"
+    volume:
+      - ./{{ volume_name }}:/var/lib/postgresql/data:Z
+    env:
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+      POSTGRES_USER: "{{ postgres_user }}"

@@ -1,0 +1,8 @@
+---
+- name: Create podman pod
+  containers.podman.podman_pod:
+    name: "{{ pod_name }}"
+    state: started
+    ports:
+      - "9876:80"
+      - "5432:5432"

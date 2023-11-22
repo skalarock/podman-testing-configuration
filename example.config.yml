@@ -1,10 +1,14 @@
 ---
 # General
 
-# Set user to be used for configuration
-
 # volume name
 volume_name: LibSQL
+
+# directories
+create_directories: true
+directories:
+  - $HOME/LibSQL/
+  - $HOME/SetupFiles
 
 # pod name
 pod_name: test-sql
@@ -14,3 +18,11 @@ pgadmin_image: docker.io/dpage/pgadmin4:latest
 
 # postgresql image
 postgresql_image: docker.io/library/postgres:latest
+
+# pgadmin env
+pgadmin_default_email: email
+pgadmin_default_password: password # testing password for vagrant test deployment
+
+# postgresql env
+postgres_password: password # testing password for vagrant test deployment
+postgres_user: user

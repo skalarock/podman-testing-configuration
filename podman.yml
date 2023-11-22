@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars_files:
-    - example.config.yml
+    - config.yml
 
   pre_tasks:
     - name: Include main playbook configuration.
@@ -13,55 +13,26 @@
       tags: ["always"]
 
   tasks:
-    - name: installing podman
-      become: true
-      package:
-        name: "podman"
-        state: present
+    - name: Include install configuration
+      ansible.builtin.import_tasks:
+        file: tasks/podman_install.yml
+      tags: ["install"]
 
-    - name: systemctl start podman.service
-      ansible.builtin.service:
-        name: "podman.service"
-        state: "started"
-        enabled: true
-      changed_when: false
-      failed_when: false
+    - name: Include directories task configuration
+      ansible.builtin.import_tasks:
+        file: tasks/directories.yml
+      when: create_directories
+      tags: ["dirs"]
 
-    - name: create directory
-      ansible.builtin.file:
-        path: /home/vagrant/{{ volume_name }}
-        state: directory
-        mode: 0755
+    #- name: Create volume
+    #  containers.podman.podman_volume:
+    #    state: present
+    #    name: "{{ volume_name }}"
+    #    options:
+    #      - "device=./{{ volume_name }}"
+    #      - "o=bind"
 
-    - name: Create podman volume
-      containers.podman.podman_volume:
-        state: present
-        name: "{{ volume_name }}"
-        options:
-          - "device=~/home/vagrant/{{ volume_name }}"
-
-    - name: Create podman pod
-      containers.podman.podman_pod:
-        name: "{{ pod_name }}"
-        state: started
-        ports:
-          - "9876:80"
-          - "5432:5432"
-
-    - name: Create pgadmin container
-      containers.podman.podman_container:
-        name: pgadmin
-        image: "{{ pgadmin_image }}"
-        state: started
-        detach: true
-        pod: "{{ pod_name }}"
-
-    - name: Create postgresql container
-      containers.podman.podman_container:
-        name: db
-        image: "{{ postgresql_image }}"
-        state: started
-        detach: true
-        pod: "{{ pod_name }}"
-        volume:
-          - /home/vagrant/{{ volume_name }}:/var/lib/postgresql/data:Z
+    - name: Include podman pod setup
+      ansible.builtin.import_tasks:
+        file: tasks/pod_setup.yml
+      tags: ["pod"]
