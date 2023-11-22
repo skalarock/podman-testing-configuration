@@ -9,13 +9,14 @@
     - name: Include main playbook configuration.
       ansible.builtin.include_vars: "{{ item }}"
       with_fileglob:
-        - "{{ playbook_dir }}/example.config.yml"
+        - "{{ playbook_dir }}/config.yml"
       tags: ["always"]
 
   tasks:
     - name: Include install configuration
       ansible.builtin.import_tasks:
         file: tasks/podman_install.yml
+      when: install_podman
       tags: ["install"]
 
     - name: Include directories task configuration
@@ -24,15 +25,13 @@
       when: create_directories
       tags: ["dirs"]
 
-    #- name: Create volume
-    #  containers.podman.podman_volume:
-    #    state: present
-    #    name: "{{ volume_name }}"
-    #    options:
-    #      - "device=./{{ volume_name }}"
-    #      - "o=bind"
-
     - name: Include podman pod setup
       ansible.builtin.import_tasks:
         file: tasks/pod_setup.yml
+      when: create_pod
       tags: ["pod"]
+
+    - name: Include container setup for pgadmin
+      ansible.builtin.import_tasks:
+        file: tasks/containers.yml
+      tags: ["containers"]

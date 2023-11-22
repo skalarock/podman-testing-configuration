@@ -1,8 +1,8 @@
 ---
 # General
 
-# volume name
-volume_name: LibSQL
+# podman install
+install_podman: true
 
 # directories
 create_directories: true
@@ -11,17 +11,18 @@ directories:
   - $HOME/SetupFiles
 
 # pod name
-pod_name: test-sql
+create_pod: true
+pod_name: test-sql # add your podman name
 
 # pgadmin image
 pgadmin_image: docker.io/dpage/pgadmin4:latest
 
-# postgresql image
-postgresql_image: docker.io/library/postgres:latest
-
 # pgadmin env
 pgadmin_default_email: email
 pgadmin_default_password: password # testing password for vagrant test deployment
+
+# postgresql image
+postgresql_image: docker.io/library/postgres:latest
 
 # postgresql env
 postgres_password: password # testing password for vagrant test deployment
