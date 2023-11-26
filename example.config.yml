@@ -7,12 +7,20 @@ install_podman: true
 # directories
 create_directories: true
 directories:
-  - $HOME/LibSQL/
-  - $HOME/SetupFiles
+  - $HOME/Learning/LibSQL/
+
+# volume name
+# add volume for container data outside the $HOME/.local/share/containers/storage/
+volume_name: LibSQL
+
+# home directory
+# add your home directory
+homedir: homedir
 
 # pod name
+# add your podman name
 create_pod: true
-pod_name: test-sql # add your podman name
+pod_name: test-sql
 
 # pgadmin image
 pgadmin_image: docker.io/dpage/pgadmin4:latest

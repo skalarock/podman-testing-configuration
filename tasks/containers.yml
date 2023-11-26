@@ -18,7 +18,7 @@
     detach: true
     pod: "{{ pod_name }}"
     volume:
-      - ./{{ volume_name }}:/var/lib/postgresql/data:Z
+      - "{{ homedir }}/{{ volume_name }}:/var/lib/postgresql/data:Z"
     env:
       POSTGRES_PASSWORD: "{{ postgres_password }}"
       POSTGRES_USER: "{{ postgres_user }}"
